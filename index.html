@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TP3</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<form name="form1">
+		<fieldset>
+			<legend>Les coordonnées de l'étudiants</legend>
+			<table name="table1">
+			<tr>
+				<td>
+					<label for="cin">CIN:</label>
+				</td>
+				<td>
+					<select name="cin">
+						<option>A1000</option>
+						<option>A2000</option>
+						<option>A3000</option>
+					</select>
+					<input type="button" name="affiche" value="Afficher" onclick="Afficher();">	
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="nom">Nom:</label>
+				</td>
+				<td>
+					<input type="text" name="nom">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="prenom">Prénom:</label>
+				</td>
+				<td>
+					<input type="text" name="prenom">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="mail">Mail:</label>
+				</td>
+				<td>
+					<input type="text" name="mail">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="telephone">Téléphone:</label>
+				</td>
+				<td>
+					<input type="text" name="telephone">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="photo">Photo:</label>
+				</td>
+				<td>
+					<img name="photo" src="images/fille.jpg" width="150px" height="150px">
+				</td>
+			</tr>
+			
+
+		</table>
+			
+		</fieldset>
+		<br>
+		<fieldset>
+			<legend>Enregistrements de l'étudiant</legend>
+			<table name="table1">
+			<tr>
+				<td>
+					<label for="cin1">CIN:</label>
+				</td>
+				<td>
+					<input type="text" name="cin1" >
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="nom1">Nom:</label>
+				</td>
+				<td>
+					<input type="text" name="nom1" >
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="prenom1">Prénom:</label>
+				</td>
+				<td>
+					<input type="text" name="prenom1" >
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="mail1">Mail:</label>
+				</td>
+				<td>
+					<input type="text" name="mail1" >
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="telephone1">Téléphone:</label>
+				</td>
+				<td>
+					<input type="text" name="telephone1" >
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="photo1">Photo:</label>
+				</td>
+				<td>
+					<input id="f1" type="file" name="photo1" accept="image/jpg, image/png, imge/jfif"onchange="Upload()" >
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<input type="button" name="enregistre" value="Enregistrer" onclick="Enregistrer();">
+					<input type="reset" name="reset" value="Annuler">
+				</td>	
+			</tr>
+		</table>		
+		</fieldset>
+		<br>
+		<table id="anime" cellspacing="0">
+			<tr>
+				<td><img src="images/img1.jfif" width="100%" height="150px"></td>
+				<td><img src="images/img2.jfif" width="100%" height="150px"></td>
+				<td><img src="images/img3.jfif" width="100%" height="150px"></td>
+				<td><img src="images/img4.jfif" width="100%" height="150px"></td>
+				<td><img src="images/img5.jfif" width="100%" height="150px"></td>
+				<td><img src="images/img6.jfif" width="100%" height="150px"></td>
+			</tr>
+			<tr><input type="button"onclick="Animer()" value="Animer"></tr>
+		</table>
+	</form>
+
+<script type="text/javascript" >
+//tableau contenant les données sur les étudiants
+var data=new Array(
+	new Array("A1000","Mohamed","benMohamed","06000000","Moh0@gmail.com","images/etudiant.png"),
+	new Array("A2000","Fatima","benMohamed","060000001","fat1@gmail.com","images/fille.jpg"),
+	new Array("A3000","Khadidja","benAli","06000002","Khad2@gmail.com","images/fille.jpg")
+	);
+//Tableau des images d'animation
+const images_animation=new Array("img1","img2","img3","img4","img5","img6","img7","img8","img9");
+//Fonction qui affiche les informations de 
+//l'etudiant dont le CIN a été séléctionné
+function Afficher(){
+	var Elements=document.forms.form1.elements;
+	var index=Elements.cin.selectedIndex;
+	var CIN=Elements.cin.options[index].text;
+	if(CIN!=null){
+		for(var i=0; i<data.length; i++){
+			if(data[i][0]===CIN){
+				Elements.nom.value=data[i][1];
+				Elements.prenom.value=data[i][2];
+				Elements.telephone.value=data[i][3];
+				Elements.mail.value=data[i][4];
+				if(sessionStorage.getItem(data[i][5])!=null)
+				document.images.namedItem("photo").src=sessionStorage.getItem(data[i][5]);
+				else
+				document.images.namedItem("photo").src=data[i][5];
+				break;
+			}
+		}
+	}
+}
+//Fonction qui fait l'enregistrement des données t3a les étudiants
+function Enregistrer(){
+		if(ControlerChamp()/*On controle avant d'enregistrer*/ ){
+			var Elements=document.forms.form1.elements;
+			var newRow=new Array(
+			Elements.cin1.value,
+			Elements.nom1.value,
+			Elements.prenom1.value,
+			Elements.telephone1.value,
+			Elements.mail1.value
+			);
+			var photo1="images/"+Elements.photo1.value.substring(12);
+            newRow.push(photo1);
+			data.push(newRow);
+			//Ajoute le nouveau CIN à la liste de séléction
+			var newOption=document.createElement("option");
+			newOption.text=Elements.cin1.value;
+			Elements.cin.appendChild(newOption);
+			//Vide les champs de enregistrement
+			Elements.cin1.value="";
+			Elements.nom1.value="";
+			Elements.prenom1.value="";
+			Elements.mail1.value="";
+			Elements.telephone1.value="";
+			Elements.photo1.value="";
+			alert("Enregistrement réussi!");
+		}
+		
+}
+//Fonction de contrôle des valeurs de formulaires sans regex
+function ControlerChamp(){
+	var Elements=document.forms.form1.elements;
+	var cin=Elements.cin1.value
+	var nom=Elements.nom1.value;
+	var prenom=Elements.prenom1.value;
+	var mail=Elements.mail1.value;
+	var telephone=Elements.telephone1.value;
+	var photo=Elements.photo1.value;
+
+	if(Vide(nom)||Vide(prenom)||Vide(mail)||Vide(cin)||Vide(telephone)||Vide(photo)){
+		alert("Veuillez remplir tous les champs");
+		return false;
+	}
+	else if(!Majuscule(cin)){
+		alert("le champ CIN ne doit contenir que des caractères Majuscules \n ex:A1000");
+		return false;
+	}
+	else if(Existe(cin)){
+		alert("Le CIN que que vous avez entré existe dejà dans la base");
+		return false;
+	}
+	else if(!Mail(mail)){
+		alert("Veuillez saisir un adresse email valide \n ex:exemple@gmail.com");
+		return false;
+	}
+	else if(!Numeric(telephone)){
+		alert("Entrez un numéro de téléphone valide \n ex:0600004023");
+		return false;
+	}
+	else return true;
+}
+//====>Quelques fonctions qui vont servir à contrôler les champs
+//Verifie si un champ est vide
+function Vide(champ){
+	if(champ=="") return true;
+	else return false;
+}
+//Vérifie si un champ est Majuscule
+function Majuscule(champ){
+	if(champ==champ.toUpperCase()) return true;
+	else return false;
+}
+//Vérifie si le CIN existe déja dans la base
+function Existe(champ){
+	for(var i=0; i<data.length;i++){
+		if(champ===data[i][0]) return true;
+		else continue;
+	}
+	return false;
+}
+//Vérifie si numérique
+function Numeric(champ){
+ 	champ="1"+champ;
+ 	if(parseInt(champ).toString().length!=champ.length) return false
+ 	if(champ.length<10) return false;
+ 	else return true; 
+}
+//Vérifie si mail
+function Mail(champ){
+	//vérifie la place de l'arobase
+	var arobase=champ.indexOf('@');
+	if(arobase<1) return false;
+	//vérifie la place du point
+	var point=champ.indexOf('.');
+	if(point<=arobase+1) return false;
+	//Vérifie si le point n'est pas à la fin
+	if(point===champ.length) return false;
+	else return true;
+}
+
+//===>Fonction qui anime les images
+function Animer(){
+	var images=document.getElementById("anime").rows[0];
+	setInterval(()=>{
+		for(var i=0;i<images.cells.length;i++)
+		{
+			var random_index=Math.floor(Math.random()*images_animation.length);
+    		images.cells[i].firstChild.src="images/"+images_animation[random_index]+".jfif";
+		}
+	},1000);
+
+}
+//===>Bonus:Fonction qui simule l'Upload de la photo vers le server
+function Upload(){
+	var photo=document.forms.form1.elements.photo1;
+	const cloud=new FileReader();
+	cloud.onload=()=>{
+		sessionStorage.setItem("images/"+photo.value.substring(12),cloud.result);
+	}
+	cloud.readAsDataURL(photo.files[0]);
+}
+
+</script>
+</body>
+</html>
